@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  sgx-app:
+    build: .
+    container_name: sgx-app
+    depends_on:
+      - ca-service
+    # Keine Ports gemappt – nur intern erreichbar
+    networks:
+      - backend
+
+  ca-service:
+    build: .
+    container_name: ca-service
+    command: node ca-server.js
+    # Keine Ports gemappt – nur intern erreichbar
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge 

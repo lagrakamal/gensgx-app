@@ -1,0 +1,35 @@
+# Gramine Manifest für SGX-Node.js App mit Signierung/Hashing/Verifikation
+# Best Practices für Produktionsumgebung
+
+# 1. Loader-Konfiguration
+loader.env.LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu:/usr/lib:/usr/lib/x86_64-linux-gnu"
+loader.env.PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+loader.env.NODE_ENV = "production"
+
+# 2. Root-Dateisystem via fs.root
+fs.root.type = "chroot"
+fs.root.uri = "file:/app"
+
+fs.mounts = [
+    { type = "chroot", uri = "file:/lib", path = "/lib" },
+    { type = "chroot", uri = "file:/lib/x86_64-linux-gnu", path = "/lib/x86_64-linux-gnu" },
+    { type = "chroot", uri = "file:/usr/lib", path = "/usr/lib" },
+    { type = "chroot", uri = "file:/usr/lib/x86_64-linux-gnu", path = "/usr/lib/x86_64-linux-gnu" },
+    { type = "chroot", uri = "file:/dev/null", path = "/dev/null" },
+    { type = "chroot", uri = "file:/dev/urandom", path = "/dev/urandom" },
+    { type = "chroot", uri = "file:/dev/zero", path = "/dev/zero" },
+    { type = "chroot", uri = "file:/lib64", path = "/lib64" },
+    { type = "chroot", uri = "file:/usr/bin", path = "/usr/bin" }
+]
+
+# 3. LibOS-Konfiguration
+loader.argv = [
+    "/usr/bin/node",
+    "/src/app.js"
+]
+
+# 4. SGX-spezifische Konfiguration
+sgx.enclave_size = "2G"
+
+[libos]
+entrypoint = "/usr/bin/node"
