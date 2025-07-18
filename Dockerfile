@@ -71,7 +71,7 @@ RUN mkdir -p /app/bin /app/lib \
 RUN npm ci --omit=dev
 
 # 7. Demo-Key generieren (für Produktion eigenen Key verwenden!)
-RUN openssl genrsa -3 -out /app/enclave-key.pem 3072
+RUN openssl genrsa -out /app/enclave-key.pem 3072
 
 # 8. Gramine-Version prüfen (korrekt)
 RUN which gramine-manifest && gramine-manifest --help | head -n 1
